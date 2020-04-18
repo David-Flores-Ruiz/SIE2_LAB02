@@ -208,11 +208,15 @@ static usb_status_t USB_DeviceHidMouseAction(void)
     {
         case RIGHT:
             /* Move right. Increase X value. */
-        	g_UsbDeviceHidMouse.buffer[0] = 0x01U;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Buttons + no press left
-        	g_UsbDeviceHidMouse.buffer[2] = 2U;		// X
-            g_UsbDeviceHidMouse.buffer[3] = 0U;		// Y
-            g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
+        	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
+        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+			g_UsbDeviceHidMouse.buffer[3] = KEY_R;	// key
+			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
             x++;
             if (x > 99U)
             {
@@ -221,11 +225,15 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             break;
         case DOWN:
             /* Move down. Increase Y value. */
-        	g_UsbDeviceHidMouse.buffer[0] = 0x01U;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
-        	g_UsbDeviceHidMouse.buffer[2] = 0U;		// X
-            g_UsbDeviceHidMouse.buffer[3] = 2U;		// Y
-            g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
+        	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
+        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+			g_UsbDeviceHidMouse.buffer[3] = KEY_O;	// key
+			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
             y++;
             if (y > 99U)
             {
@@ -234,11 +242,15 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             break;
         case LEFT:
             /* Move left. Discrease X value. */
-        	g_UsbDeviceHidMouse.buffer[0] = 0x01U;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
-        	g_UsbDeviceHidMouse.buffer[2] = (uint8_t)(-2);// X
-            g_UsbDeviceHidMouse.buffer[3] = 0U;		// Y
-            g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
+        	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
+        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+			g_UsbDeviceHidMouse.buffer[3] = KEY_X;	// key
+			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
             x--;
             if (x < 2U)
             {
@@ -247,11 +259,15 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             break;
         case UP:
             /* Move up. Discrease Y value. */
-        	g_UsbDeviceHidMouse.buffer[0] = 0x01U;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
-        	g_UsbDeviceHidMouse.buffer[2] = 0U;		// X
-            g_UsbDeviceHidMouse.buffer[3] = (uint8_t)(-2);// Y
-            g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
+        	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
+        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+			g_UsbDeviceHidMouse.buffer[3] = KEY_U;	// key
+			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+			g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
             y--;
             if (y < 2U)
             {
