@@ -211,7 +211,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
         	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
         	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
-			g_UsbDeviceHidMouse.buffer[3] = KEY_R;	// key
+			g_UsbDeviceHidMouse.buffer[3] = KEY_X;	// key
 			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
 			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
 			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
@@ -228,7 +228,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
         	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
         	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
-			g_UsbDeviceHidMouse.buffer[3] = KEY_O;	// key
+			g_UsbDeviceHidMouse.buffer[3] = KEY_F5;	// key
 			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
 			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
 			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
@@ -245,7 +245,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
         	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
         	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
-			g_UsbDeviceHidMouse.buffer[3] = KEY_X;	// key
+			g_UsbDeviceHidMouse.buffer[3] = KEY_O;	// key
 			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
 			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
 			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
@@ -260,9 +260,9 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         case UP:
             /* Move up. Discrease Y value. */
         	g_UsbDeviceHidMouse.buffer[0] = 0x02U;	// Report ID (keyboard)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+        	g_UsbDeviceHidMouse.buffer[1] = MODIFERKEYS_LEFT_CTRL;	// Modifier (Ctrl + ...)
         	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
-			g_UsbDeviceHidMouse.buffer[3] = KEY_U;	// key
+			g_UsbDeviceHidMouse.buffer[3] = KEY_ESCAPE;	// key
 			g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
 			g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
 			g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
@@ -658,7 +658,7 @@ static void USB_DeviceApplicationInit(void)
      (defined(FSL_FEATURE_SOC_USB_ANALOG_COUNT) && (FSL_FEATURE_SOC_USB_ANALOG_COUNT > 0U)))
         usb_echo("USB device DCD + HID mouse demo\r\n");
 #else
-        usb_echo("USB device HID mouse demo\r\n");
+        usb_echo("USB device HID mouse demo -> Lab2 de SIE2\r\n");
 #endif
         /* Get the HID mouse class handle */
         g_UsbDeviceHidMouse.hidHandle = g_UsbDeviceHidConfigList.config->classHandle;
