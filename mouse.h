@@ -38,7 +38,9 @@
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
 
-#define USB_HID_MOUSE_REPORT_LENGTH (0x09U)	// (0x05U) mouse (0x09U) keyboard
+#define USB_HID_MOUSE_REPORT_LENGTH (0x05U)	// (0x05U) mouse
+#define USB_HID_KEYBOARD_REPORT_LENGHT (0x09U)	// (0x09U) keyboard
+
 #if (defined(USB_DEVICE_CONFIG_CHARGER_DETECT) && (USB_DEVICE_CONFIG_CHARGER_DETECT > 0U))
 /*! @brief USB DCD charging detect status */
 typedef enum _usb_device_dcd_dev_status
