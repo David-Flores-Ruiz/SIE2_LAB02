@@ -175,6 +175,8 @@ static usb_status_t USB_DeviceHidMouseAction(void)
     static int8_t x_axis = 0U;	// Aux for decide side of the Square
     static int8_t y_axis = 0U;	// Aux for decide side of the Square
 
+	const uint8_t TIMES_LOOP = 7U;		// VARIABLE LOOP
+	static uint8_t times_Drawing = 0U;	// Initialize counter of loop
 
     enum
     {
@@ -218,6 +220,8 @@ static usb_status_t USB_DeviceHidMouseAction(void)
 		SEL_TEXT,	// Ctrl + A		// (keyboard)
 		COPIAR,		// Ctrl + C		// (keyboard)
 		PANTALLA_IZQ,	// Windows + left
+		REFRESH1,	// ESC
+		REFRESH2,	// ESC
 		WINDOWS_3,	// Ctrl + Esc	// (keyboard)
 		key2_N,						// (keyboard)
 		key2_O,						// (keyboard)
@@ -236,7 +240,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
 		FIN2		// Windows + M	// (keyboard)
     };
 
-    const uint8_t delay_max = 60U;
+    const uint8_t delay_max = 60U;	// (delay_max < 60U)
     const uint8_t delay_min =  2U;
 
     const uint8_t ID_1 = 0x01U;	// Report ID 1 (mouse)
@@ -270,6 +274,8 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             x--;
             if (x < delay_min)
             {
+// Debug for Delay
+//				dir = INICIO1;
                 dir = MinimizaAll;
             	g_UsbDeviceHidMouse.buffer[0] = ID_2;	// Report ID (keyboard)
 	        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
@@ -374,7 +380,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             {
 				dir = PUNTO_PAINT2;	// Next key
 	        	g_UsbDeviceHidMouse.buffer[0] = ID_1;	// Report ID (mouse)
-	        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + no press left
+	        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Buttons + no press left
 	        	g_UsbDeviceHidMouse.buffer[2] = 0U;		// X
 	            g_UsbDeviceHidMouse.buffer[3] = 0U;		// Y
 	            g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
@@ -395,7 +401,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         case RIGHT:
             /* Move right. Increase X value. */
         	g_UsbDeviceHidMouse.buffer[0] = ID_1;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
+        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + no press left
         	g_UsbDeviceHidMouse.buffer[2] = 2U;		// X
             g_UsbDeviceHidMouse.buffer[3] = 0U;		// Y
             g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
@@ -408,7 +414,7 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         case DOWN:
             /* Move down. Increase Y value. */
         	g_UsbDeviceHidMouse.buffer[0] = ID_1;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + no press left
+        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
         	g_UsbDeviceHidMouse.buffer[2] = 0U;		// X
             g_UsbDeviceHidMouse.buffer[3] = 2U;		// Y
             g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
@@ -421,12 +427,12 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         case LEFT:
             /* Move left. Discrease X value. */
         	g_UsbDeviceHidMouse.buffer[0] = ID_1;	// Report ID (mouse)
-        	g_UsbDeviceHidMouse.buffer[1] = 0x01U;	// Buttons + press left
+        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Buttons + no press left
         	g_UsbDeviceHidMouse.buffer[2] = (uint8_t)(-2);// X
             g_UsbDeviceHidMouse.buffer[3] = 0U;		// Y
             g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
             x_axis--;
-            if (x_axis < 2U)
+            if (x_axis < 4U) // (x < 2U)
             {
             	dir = UP;
             }
@@ -439,11 +445,12 @@ static usb_status_t USB_DeviceHidMouseAction(void)
             g_UsbDeviceHidMouse.buffer[3] = (uint8_t)(-2);// Y
             g_UsbDeviceHidMouse.buffer[4] = 0U; 	// Z
             y_axis--;
-            if  (y_axis < 59U)	// (y < 2U)
+            if  (y_axis < 58U)	// (y < 2U)
             {
                 dir = PUNTO_PAINT3;
                 x_axis = 0U;	// Restart figure values
                 y_axis = 0U;	// Restart figure values
+                times_Drawing++;
             }
             break;
 		case PUNTO_PAINT3:
@@ -533,6 +540,11 @@ static usb_status_t USB_DeviceHidMouseAction(void)
 				g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
 				g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
 				g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
+// Continues execution of the program
+	            if (times_Drawing == TIMES_LOOP)    {
+	            	dir = WINDOWS_2;	// Next key
+	            	times_Drawing = 0U; // Restart counter
+	            }
 			}
 			break;
 		case WINDOWS_2:
@@ -722,11 +734,43 @@ static usb_status_t USB_DeviceHidMouseAction(void)
 			x++;
 			if (x > delay_max)
 			{
-				dir = WINDOWS_3;	// Next key
+				dir = REFRESH1;	// Next key
 	        	g_UsbDeviceHidMouse.buffer[0] = ID_2;	// Report ID (keyboard)
 	        	g_UsbDeviceHidMouse.buffer[1] = MODIFERKEYS_LEFT_GUI;	// Modifier (Ctrl + ...)
 	        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
 				g_UsbDeviceHidMouse.buffer[3] = KEY_LEFTARROW;	// key
+				g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+				g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
+			}
+			break;
+		case REFRESH1:
+            x--;
+            if (x < delay_min)
+            {
+				dir = REFRESH2;	// Next key
+	        	g_UsbDeviceHidMouse.buffer[0] = ID_2;	// Report ID (keyboard)
+	        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+	        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+				g_UsbDeviceHidMouse.buffer[3] = KEY_ESCAPE;	// key
+				g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
+				g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[7] = 0x00U;	// key
+				g_UsbDeviceHidMouse.buffer[8] = 0x00U;	// key
+			}
+			break;
+		case REFRESH2:
+			x++;
+			if (x > delay_max)
+            {
+				dir = WINDOWS_3;	// Next key
+	        	g_UsbDeviceHidMouse.buffer[0] = ID_2;	// Report ID (keyboard)
+	        	g_UsbDeviceHidMouse.buffer[1] = 0x00U;	// Modifier (Ctrl + ...)
+	        	g_UsbDeviceHidMouse.buffer[2] = 0x00U;	// Reserved
+				g_UsbDeviceHidMouse.buffer[3] = KEY_LEFTSHIFT;	// key
 				g_UsbDeviceHidMouse.buffer[4] = 0x00U; 	// key
 				g_UsbDeviceHidMouse.buffer[5] = 0x00U;	// key
 				g_UsbDeviceHidMouse.buffer[6] = 0x00U;	// key
